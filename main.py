@@ -56,6 +56,9 @@ while is_working:
         main_surface.blit(enemy[0], enemy[1])
         enemy[1] = enemy[1].move(-enemy[2], 0)
 
+        if enemy[1].left <= 0 or ball_rect.colliderect(enemy[1]):
+            enemies.pop(enemies.index(enemy))
+
     if presed_keys[K_DOWN]:
         ball_rect = ball_rect.move(0, ball_speed)
 
