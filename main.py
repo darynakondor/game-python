@@ -4,6 +4,8 @@ import random
 
 pygame.init()
 
+FPS = pygame.time.Clock()
+
 screen = width, heigth = 800, 600
 
 BALL_COLOR = 255, 255, 255
@@ -15,7 +17,7 @@ main_surface = pygame.display.set_mode(screen)
 ball = pygame.Surface((20, 20))
 ball.fill(BALL_COLOR)
 ball_rect = ball.get_rect()
-ball_speed = 1
+ball_speed = 5
 
 
 def create_enemy():
@@ -35,6 +37,8 @@ enemies = []
 is_working = True
 
 while is_working:
+
+    FPS.tick(60)
 
     for event in pygame.event.get():
         if event.type == QUIT:
