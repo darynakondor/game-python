@@ -1,5 +1,6 @@
 import pygame
 from pygame.constants import QUIT, K_DOWN, K_UP, K_LEFT, K_RIGHT
+import random
 
 pygame.init()
 
@@ -20,8 +21,9 @@ ball_speed = 1
 def create_enemy():
     enemy = pygame.Surface((20, 20))
     enemy.fill(ENEMY_COLOR)
-    enemy_rect = pygame.Rect(width, 100, *enemy.get_size())
-    enemy_speed = 1
+    enemy_rect = pygame.Rect(
+        width, random.randint(0, heigth), *enemy.get_size())
+    enemy_speed = random.randint(2, 5)
     return [enemy, enemy_rect, enemy_speed]
 
 
@@ -33,6 +35,7 @@ enemies = []
 is_working = True
 
 while is_working:
+
     for event in pygame.event.get():
         if event.type == QUIT:
             is_working == False
