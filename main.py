@@ -6,10 +6,11 @@ pygame.init()
 
 FPS = pygame.time.Clock()
 
-screen = width, heigth = 800, 600
+screen = width, height = 800, 600
 
 BALL_COLOR = 255, 255, 255
 ENEMY_COLOR = 255, 0, 0
+BONUS_COLOR = 240, 230, 140
 BACKGROUND_COLOR = 0, 0, 0
 
 main_surface = pygame.display.set_mode(screen)
@@ -24,15 +25,28 @@ def create_enemy():
     enemy = pygame.Surface((20, 20))
     enemy.fill(ENEMY_COLOR)
     enemy_rect = pygame.Rect(
-        width, random.randint(0, heigth), *enemy.get_size())
+        width, random.randint(0, height), *enemy.get_size())
     enemy_speed = random.randint(2, 5)
     return [enemy, enemy_rect, enemy_speed]
+
+
+def create_bonus():
+    bonus = pygame.Surface((20, 20))
+    bonus.fill(BONUS_COLOR)
+    bonus_rect = pygame.Rect(
+        random.randint(0, width), 0, *bonus.get_size())
+    bonus_speed = random.randint(1, 4)
+    return [bonus, bonus_rect, bonus_speed]
 
 
 CREATE_ENEMY = pygame.USEREVENT + 1
 pygame.time.set_timer(CREATE_ENEMY, 1500)
 
+CREATE_BONUS = pygame.USEREVENT + 1
+pygame.time.set_timer(CREATE_BONUS, 1500)
+
 enemies = []
+bonuses = []
 
 is_working = True
 
@@ -45,6 +59,8 @@ while is_working:
             is_working == False
         if event.type == CREATE_ENEMY:
             enemies.append(create_enemy())
+        if event.type == CREATE_BONUS:
+            bonuses.append(create_bonus())
 
     presed_keys = pygame.key.get_pressed()
 
@@ -59,7 +75,14 @@ while is_working:
         if enemy[1].left <= 0 or ball_rect.colliderect(enemy[1]):
             enemies.pop(enemies.index(enemy))
 
-    if presed_keys[K_DOWN] and not ball_rect.bottom >= heigth:
+    for bonus in bonuses:
+        main_surface.blit(bonus[0], bonus[1])
+        bonus[1] = bonus[1].move(0, bonus[2])
+
+        if bonus[1].bottom >= height or ball_rect.colliderect(bonus[1]):
+            bonuses.pop(bonuses.index(bonus))
+
+    if presed_keys[K_DOWN] and not ball_rect.bottom >= height:
         ball_rect = ball_rect.move(0, ball_speed)
 
     if presed_keys[K_UP] and not ball_rect.top <= 0:
