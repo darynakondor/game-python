@@ -59,16 +59,16 @@ while is_working:
         if enemy[1].left <= 0 or ball_rect.colliderect(enemy[1]):
             enemies.pop(enemies.index(enemy))
 
-    if presed_keys[K_DOWN]:
+    if presed_keys[K_DOWN] and not ball_rect.bottom >= heigth:
         ball_rect = ball_rect.move(0, ball_speed)
 
-    if presed_keys[K_UP]:
+    if presed_keys[K_UP] and not ball_rect.top <= 0:
         ball_rect = ball_rect.move(0, -ball_speed)
 
-    if presed_keys[K_RIGHT]:
+    if presed_keys[K_RIGHT] and not ball_rect.right >= width:
         ball_rect = ball_rect.move(ball_speed, 0)
 
-    if presed_keys[K_LEFT]:
+    if presed_keys[K_LEFT] and not ball_rect.left <= 0:
         ball_rect = ball_rect.move(-ball_speed, 0)
 
     pygame.display.flip()
