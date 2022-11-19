@@ -28,7 +28,7 @@ def create_enemy():
     enemy = pygame.image.load('enemy.png').convert_alpha()
     enemy_height = enemy.get_height()
     enemy_rect = pygame.Rect(
-        width, random.randint(enemy_height, height - enemy_height), *enemy.get_size())
+        width, random.randint(0, height - enemy_height), *enemy.get_size())
     enemy_speed = random.randint(4, 7)
     return [enemy, enemy_rect, enemy_speed]
 
@@ -37,7 +37,7 @@ def create_bonus():
     bonus = pygame.image.load('bonus.png').convert_alpha()
     bonus_width = bonus.get_width()
     bonus_rect = pygame.Rect(
-        random.randint(bonus_width, width - bonus_width), 0, *bonus.get_size())
+        random.randint(0, width - bonus_width), 0, *bonus.get_size())
     bonus_speed = random.randint(1, 3)
     return [bonus, bonus_rect, bonus_speed]
 
@@ -50,10 +50,10 @@ bg_speed = 3
 
 
 CREATE_ENEMY = pygame.USEREVENT + 1
-pygame.time.set_timer(CREATE_ENEMY, 3000)
+pygame.time.set_timer(CREATE_ENEMY, 2800)
 
 CREATE_BONUS = pygame.USEREVENT + 2
-pygame.time.set_timer(CREATE_BONUS, 3500)
+pygame.time.set_timer(CREATE_BONUS, 3200)
 
 CHANGE_IMAGE = pygame.USEREVENT + 3
 pygame.time.set_timer(CHANGE_IMAGE, 125)
@@ -115,10 +115,11 @@ while is_working:
         main_surface.blit(bonus[0], bonus[1])
         bonus[1] = bonus[1].move(0, bonus[2])
 
-        if bonus[1].bottom >= height or player_rect.colliderect(bonus[1]):
+        if bonus[1].bottom >= height:
             bonuses.pop(bonuses.index(bonus))
         if player_rect.colliderect(bonus[1]):
             scores += 1
+            bonuses.pop(bonuses.index(bonus))
 
     if presed_keys[K_DOWN] and not player_rect.bottom >= height:
         player_rect = player_rect.move(0, player_speed)
